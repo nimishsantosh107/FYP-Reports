@@ -1,0 +1,59 @@
+\usepackage{graphicx}
+\usepackage{mathpazo}
+\usepackage{geometry}
+\usepackage{hyphenat}
+\usepackage{fullpage}
+\usepackage{setspace}
+\onehalfspacing
+
+\newsavebox{\btitle}
+\newsavebox{\bstudent}
+\newsavebox{\bguide}
+\newsavebox{\bphase}
+\newsavebox{\breview}
+\newsavebox{\bsemester}
+\newsavebox{\breviewdate}
+
+\newcommand{\ptitle}[1]{\sbox{\btitle}{\parbox[c]{\linewidth}{\centering\Large{\textbf{#1}}}}}
+\newcommand{\student}[1]{\sbox{\bstudent}{#1}}
+\newcommand{\semester}[1]{\sbox{\bsemester}{Semester #1}}
+\newcommand{\guide}[1]{\sbox{\bguide}{#1}}
+\newcommand{\phase}[1]{\sbox{\bphase}{#1}}
+\newcommand{\review}[1]{\sbox{\breview}{\textbf{Project Review: #1}}}
+\newcommand{\reviewdate}[1]{\sbox{\breviewdate}{#1}}
+
+% number of students
+\newcounter{nauthors}
+\newcommand{\setnauthors}[1]{\setcounter{nauthors}{#1}}
+% names of students
+\newcommand{\setauthorone}[2]{\def\authorone{#1}\def\regone{#2}}
+\newcommand{\setauthortwo}[2]{\def\authortwo{#1}\def\regtwo{#2}}
+\newcommand{\setauthorthree}[2]{\def\authorthree{#1}\def\regthree{#2}}
+
+\newcommand{\reviewtitle}{
+    \begin{center}
+      \usebox{\btitle}\\
+      \vspace{.5\baselineskip}
+      \ifnum \value{nauthors} = 3
+      \begin{tabular}{ll}
+        \authorone & \regone\\
+        \authortwo & \regtwo\\
+        \authorthree & \regthree\\
+      \end{tabular}
+      \fi
+
+      \medskip
+      BE CSE, \usebox{\bsemester}\\
+    \end{center}
+
+    \begin{center}
+      \usebox{\bguide}\\
+      Supervisor\\
+    \end{center}
+ 
+    \begin{center}
+      \usebox{\breview} (\usebox{\breviewdate})\\
+      Department of Computer Science and Engineering\\
+      SSN College of Engineering\\
+    \end{center}
+}

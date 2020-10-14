@@ -1,0 +1,8 @@
+**/.vscode/
+**/.DS_Store
+**/*.code-workspace
+**/*.log
+**/*.aux
+**/*.fdb_latexmk
+**/*.fls
+**/*.synctex.gz
