@@ -58,15 +58,37 @@ to a lot of time spent on extracting useful features from higher-level
 representations. A combination of all these problems results in extremely 
 sample-inefficient performance of existing algorithms.
 
-To put things into perspective, we compare the current methods published 
-publicly by the team at \textit{OpenAI}. In order to attain human-level control
-in an extremely complex environment, a \textit{Proximal Policy Optimization}
-agent was  trained over a period of 10 months. It was trained using
-128,000 CPU cores and 256 GPUs and read in 1,048,576 observations 
-every second. It used an unimaginably large number of samples, 
-simply impractical for use on a large scale.
+In 2018, the team at OpenAI tried to attain human-level control
+in an extremely complex environment called Dota2. It is a 
+strategic real-time video game with 170,000 possible actions in each
+time-step that took humans approximately 600 hours to learn. The rewards 
+too were very sparse with the agent attaining significant reward once 
+every 5-10 minutes. A \textit{Proximal Policy Optimization}
+agent was trained over a period of 10 months. It cost 7.5 million 
+dollars to train and was trained using
+128,000 CPU cores and 256 GPUs. It read in 1,048,576 observations 
+every second which is an unimaginably large number of samples. 
+This entire setup is simply impractical for use on a large scale.
 
-% our solution
+Sample-inefficiency is just the result of the explore-exploit dilemma 
+in practice. In order to attain the maximum possible reward, sufficient
+exploration must be done to identify the best possible sequence of decisions
+in a given situation and then the agent must exploit its knowledge of the environment.
+There is a fine line between exploration and exploitation as more exploration
+would take a lot of time to experience states further down the hierarchy and pure 
+exploitation will result in the agent getting stuck in a local maxima. 
+
+Currently for complex enironments, algorithms 
+explore using a naive method based on adding random noise to the action 
+probabilities of the agent. We propose to use intelligent exploration 
+techniques introduced in much simpler environments in combination with 
+powerful RL algorithms to significantly improve sample efficiency in 
+complex environments. In order to test this theory, we plan to use a complex
+environment called MineRL which is based on a 3D sandbox survival video game
+called Minecraft. The game focuses on the player collecting resources and crafting materials
+in order to survive. We plan to test this theory first using the SuperMarioBros 
+environment which is a 2D environment but presents its own set of complications 
+due to its large non-repetitive state space and complex action space.
 
 \section{Literature survey}
 Some of the existing approaches use Inductive Logic Programming that
