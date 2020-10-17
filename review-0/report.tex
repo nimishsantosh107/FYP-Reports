@@ -91,49 +91,65 @@ environment which is a 2D environment but presents its own set of complications
 due to its large non-repetitive state space and complex action space.
 
 \section{Literature survey}
-Some of the existing approaches use Inductive Logic Programming that
-do not use probabilistic graphical model to compute conditional
-probabilities for inferred facts. To avoid this, a statistical
-relational learning approach is adopted. SRL handles both uncertainty
-and structured data, integrating first-order logic and probabilistic
-graphical models. The alternative is to take SRL approaches such as
-Markov Logic Networks (MLN) framework for both learning first order
-rules and probabilistic inference of additional facts. But MLN may
-result in an intractably large graphical model for large datasets.
+Minh, et al. \cite{dqn} introduced the off-policy DQN \textit{(Deep Q-Network)} agent which
+used neural networks to aproximate the values of continuous state spaces. Till then, the applicability of RL
+has been limited to domains with fully observed, low-dimensional state spaces with
+discrete actions. The DQN agent could tackle significantly more complex environments than possible before
+this point. The agent was tested on the Atari 2600 platform which consisted of
+49 games. The observation was given in the form of pixel representations of the game at every time step.
+The performance of the agent was scaled between 100\% (professional human player) and 0\% (random agent).
+The experiments showed that with a single set of hyperparameters, the agent
+was able to achieve superhuman ( $>$ 200\%) performance in 14 games, professional level
+( $>$ 100\%) performance in 9 games and above average ( $>$ 75\%) performance in 6 games.
+This proved the robustness of the algorithm to different environments and also proved that
+the agents could learn meaningful state representations from high-level features like pixels.
+DQfD \textit{(Deep Q-learning from Demonstrations)} \cite{dqdf}, leverages small sets of demonstration data to 
+massively accelerate the learning process. It is able to automatically assess the necessary ratio of demonstration data while 
+learning thanks to the Prioritized Experienced Replay \cite{per} mechanism.
 
-\section{Proposed system}
+Lillicrap, et al. \cite{ddpg} presented a model-free, off-policy actor-critic
+algorithm called DDPG \textit{(Deep Deterministic Policy Gradient)} that can operate over continuous action spaces unlike DQN.  
+DDPG can learn competitive policies using low-dimensional 
+observations (e.g. cartesian coordinates or joint angles) and even directly from pixels 
+using the same hyperparameters and network structure. Robotic control environments, where 
+the agent could control all the joints of a robotic arm in 7 degrees of freedom and gait-simulation environments, 
+where the agent could control the joints of a bipedal and a quadripedal entitiy were used to evaluate the performance
+of the algorithm. In both cases, the algorithm was able to converge close to an optimal policy within 2.5 million 
+steps. Since DDPG can only work in continuous action spaces and DQN can only work with discrete actions, there
+is no baseline for comparison between the two. However, it has been generally proven via experiments that
+in most cases DDPG could converge to a better policy whereas DQN was more sample efficient. DDPG tended to overestimate
+values of certain states leading it to converge to suboptimal policies. Fujimoto, et al. \cite{td3} introduced
+a modified version of the DDPG algorithm called the TD3 \textit{(Twin Delayed Deep Deterministic Policy Gradient)} which addressed the 
+overestimation bias of the DDPG, allowing it to converge faster to better policies.
 
-A Rule Learner is applied on the set of facts an IE system has
-extracted from the document. The Rule Learner first updates the
-frequency of occurrence of each relational predicate. Then it builds a
-Bayesian network whose nodes represent relation extractions. It then
-traverses the graph to know the first order rules. The learner
-traverses the resulting graph to construct rules. For each directed
-edge $(x,y)$ in the graph, it constructs a rule in which the body
-contains $x$ and the head is $y$ head. System architecture for
-inferring implicit facts using BLPs is shown in Figure~\ref{arch}.
+
+
+\section{Environments}
 
 
 \begin{thebibliography}{99}
-  \bibliographystyle{plain}
-  
-\bibitem[1]{sindhu2013} Sindhu Raghavan, Raymond J. Mooney, {\em
-    Online Inference-Rule Learning from Natural-Language Extractions},
-  University of Texas at Austin, In Proceedings of the 3rd Statistical
-  Relational AI (StaRAI-13) workshop at AAAI '13, July 2013.
+\bibliographystyle{plain}
 
-\bibitem[2]{sindhu2012}Sindhu Raghavan, Raymond J. Mooney, and
-  Ku. H,{\em to read between the lines using Bayesian Logic Programs},
-  In Proceedings of ACL 2012.
+\bibitem[1]{dqn}Mnih, V., Kavukcuoglu, K., Silver, D. et al. 
+  {\em Human-level control through deep reinforcement learning.} 
+   Nature 518, 529–533 (2015).
 
-\bibitem[3]{cowir1996}Cowie, J., and Lehnert, W. ,{\em Information
-    extraction}, 1996 CACM.
+\bibitem[2]{dqdf}Hester, T., Vecerik, M., Pietquin, 0., et al. 
+  {\em Deep Q-learning from Demonstrations.}
+  ArXiv (2017).
 
-\bibitem[4]{kersting2007}Kersting, K., and De Raedt, L., {\em Bayesian
-    Logic Programming: Theory and tool}, 2007
+\bibitem[3]{per}Schaul, T., Quan, J., Antonoglou, I., and Silver, D.
+  {\em Prioritized Experience Replay.}
+  ArXiv (2015).
 
-\bibitem[5]{5} In Getoor, L., and Taskar, B, {\em Introduction to
-    Statistical Relational Learning}, Cambridge, MA: MIT Press.
+\bibitem[4]{ddpg}Lillicrap, T., Hunt, J., Pritzel, A. et al.
+  {\em Continuous control with deep reinforcement learning.}
+  ArXiv (2015).
+
+\bibitem[5]{td3}Fujimoto, S., Hoof, H., Meger, D.
+  {\em Addressing Function Approximation Error in Actor-Critic Methods.}
+  ArXiv (2018).
+
 \end{thebibliography}
 
 
