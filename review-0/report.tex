@@ -92,19 +92,21 @@ due to its large non-repetitive state space and complex action space.
 
 \section{Literature survey}
 Minh, et al. \cite{dqn} introduced the off-policy DQN \textit{(Deep Q-Network)} agent which
-used neural networks to aproximate the values of continuous state spaces. Till then, the applicability of RL
-has been limited to domains with fully observed, low-dimensional state spaces with
-discrete actions. The DQN agent could tackle significantly more complex environments than possible before
-this point. The agent was tested on the Atari 2600 platform which consisted of
-49 games. The observation was given in the form of pixel representations of the game at every time step.
-The performance of the agent was scaled between 100\% (professional human player) and 0\% (random agent).
+used neural networks to aproximate the values of continuous state spaces. Till then,
+the applicability of RL has been limited to domains with fully observed, low-dimensional
+state spaces with discrete actions. The DQN agent could tackle significantly more 
+complex environments than possible before this point. The agent was tested on the 
+Atari 2600 platform which consisted of 49 games. The observation was given in the 
+form of pixel representations of the game at every time step. The performance of the 
+agent was scaled between 100\% (professional human player) and 0\% (random agent).
 The experiments showed that with a single set of hyperparameters, the agent
 was able to achieve superhuman ( $>$ 200\%) performance in 14 games, professional level
 ( $>$ 100\%) performance in 9 games and above average ( $>$ 75\%) performance in 6 games.
 This proved the robustness of the algorithm to different environments and also proved that
 the agents could learn meaningful state representations from high-level features like pixels.
-DQfD \textit{(Deep Q-learning from Demonstrations)} \cite{dqdf}, leverages small sets of demonstration data to 
-massively accelerate the learning process. It is able to automatically assess the necessary ratio of demonstration data while 
+DQfD \textit{(Deep Q-learning from Demonstrations)} \cite{dqdf}, leverages small sets of 
+demonstration data to massively accelerate the learning process. It is able to 
+automatically assess the necessary ratio of demonstration data while 
 learning thanks to the Prioritized Experienced Replay \cite{per} mechanism.
 
 Lillicrap, et al. \cite{ddpg} presented a model-free, off-policy actor-critic
@@ -121,8 +123,49 @@ in most cases DDPG could converge to a better policy whereas DQN was more sample
 values of certain states leading it to converge to suboptimal policies. Fujimoto, et al. \cite{td3} introduced
 a modified version of the DDPG algorithm called the TD3 \textit{(Twin Delayed Deep Deterministic Policy Gradient)} which addressed the 
 overestimation bias of the DDPG, allowing it to converge faster to better policies.
+\linebreak
 
+Pathak et al. \cite{cdl} introduced the ICM \textit{(Intrinsic Curiosity Module)} 
+architecture as an alternative to random exploration techniques in environments with 
+sparse or no extrinsic rewards. RL algorithms were predominantly trained in environments
+that provided a continuous supply of extrinsic rewards. ICM architecture enabled 
+training in environments that resembled real-world scenarios due to their lack of 
+extrinsic rewards. Curiosity also aided agents in exploring environments for new 
+knowledge and learning skills that might help in future tasks. ICM architecture 
+was tested in two environments for 3 different settings - sparse extrinsic rewards, 
+no extrinsic rewards and novel scenarios. The sparse extrinsic reward experiment was 
+performed on VizDoom by varying the degree of reward sparsity. The curious agent learnt
+much faster in the 'dense' and sparse reward case. The baseline agent failed to solve
+the task in the sparse reward case while both failed to solve the 'very sparse' 
+reward case. The no reward setting saw agents successfully explore and navigate 
+environments with no extrinsic rewards in Super Mario Bros and VizDoom environments.
+The agent also discovered winning behaviours. The novel-scenario setting evaluated 
+generalization of agent behaviours in two ways: `as is` (no further learning) and 
+fine-tuning the policies. Good generalization was observed in 'as-is' for scenarios 
+that weren't significantly different visually. Fine-tuning with curiosity helped 
+tackle the mentioned drawbacks.
 
+Andrychowicz et al. \cite{her} introduced a novel technique called HER 
+\textit{(Hindsight Experience Replay)} that enabled sample-efficient learning by 
+combining it with off-policy RL algorithms to problems with sparse and binary 
+rewards. A standard RL algorithm would learn little to nothing from a sequence of 
+actions that lead to an unsuccessful state while HER encourages a replay of the same
+actions for a different goal giving rise to faster learning. Transition tuples 
+encountered during training are stored in a replay buffer for harvesting 
+information using different goals. HER was tested in combination with off-policy 
+algorithms like DDPG for 3 different robotic control tasks - pushing, sliding and pick-and-place.
+For HER, each transition was stored in the replay buffer twice: for the goal used to 
+generate the episode and the goal corresponding to the final state. DDPG without 
+HER was unable to solve any of the tasks while DDPG with HER solved them all, almost
+perfectly. DDPG with HER improved 
+performance even when the goal state was identical in all episodes. The agent 
+learned faster when training episodes had multiple goals. When reward functions
+were shaped (and not the previous binary), both DDPG and the HER supported agents
+were unable to solve any of the tasks. An analysis of alternative replay goals
+tested future, episode and random goal strategies. It showed
+that the most valuable goals for replay were ones that were going to be achieved
+in the near future. HER was also tested on a physical fetch robot without fine-tuning
+and performed well on the pick-and-place task.
 
 \section{Environments}
 
@@ -130,25 +173,33 @@ overestimation bias of the DDPG, allowing it to converge faster to better polici
 \begin{thebibliography}{99}
 \bibliographystyle{plain}
 
-\bibitem[1]{dqn}Mnih, V., Kavukcuoglu, K., Silver, D. et al. 
+  \bibitem[1]{dqn}Mnih, V., Kavukcuoglu, K., Silver, D. et al. 
   {\em Human-level control through deep reinforcement learning.} 
    Nature 518, 529–533 (2015).
 
-\bibitem[2]{dqdf}Hester, T., Vecerik, M., Pietquin, 0., et al. 
+  \bibitem[2]{dqdf}Hester, T., Vecerik, M., Pietquin, 0., et al. 
   {\em Deep Q-learning from Demonstrations.}
   ArXiv (2017).
 
-\bibitem[3]{per}Schaul, T., Quan, J., Antonoglou, I., and Silver, D.
+  \bibitem[3]{per}Schaul, T., Quan, J., Antonoglou, I., and Silver, D.
   {\em Prioritized Experience Replay.}
   ArXiv (2015).
 
-\bibitem[4]{ddpg}Lillicrap, T., Hunt, J., Pritzel, A. et al.
+  \bibitem[4]{ddpg}Lillicrap, T., Hunt, J., Pritzel, A. et al.
   {\em Continuous control with deep reinforcement learning.}
   ArXiv (2015).
 
-\bibitem[5]{td3}Fujimoto, S., Hoof, H., Meger, D.
+  \bibitem[5]{td3}Fujimoto, S., Hoof, H., Meger, D.
   {\em Addressing Function Approximation Error in Actor-Critic Methods.}
   ArXiv (2018).
+
+  \bibitem[6]{cdl} Pathak, D., Agrawal, P., Efros, A., Darrell, T.
+  {\em Curiosity-Driven Exploration by Self-Supervised Prediction.}
+  IEEE Conference on Computer Vision and Pattern Recognition Workshops (CVPRW) (2017).
+
+  \bibitem[7]{her} Andrychowicz, M., Wolski, F., Ray, A.,
+  {\em Hindsight Experience Replay.}
+  Advances in Neural Information Processing Systems 30 (NIPS) (2017).
 
 \end{thebibliography}
 
