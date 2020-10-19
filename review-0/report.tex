@@ -6,9 +6,6 @@
 \usepackage{longtable}
 %\usepackage{mathtools}
 \usepackage{algorithm2e}[1]
-\usepackage{tikz}
-\usetikzlibrary{shapes,arrows}
-\usetikzlibrary{trees}
 
 \begin{document}
 
@@ -91,8 +88,8 @@ environment which is a 2D environment but presents its own set of complications
 due to its large non-repetitive state space and complex action space.
 
 \section{Literature survey}
-Minh, et al. \cite{dqn} introduced the off-policy DQN \textit{(Deep Q-Network)} agent which
-used neural networks to aproximate the values of continuous state spaces. Till then,
+Mnih, et al. \cite{dqn} introduced the off-policy DQN \textit{(Deep Q-Network)} agent which
+used neural networks to approximate the values of continuous state spaces. Till then,
 the applicability of RL has been limited to domains with fully observed, low-dimensional
 state spaces with discrete actions. The DQN agent could tackle significantly more 
 complex environments than possible before this point. The agent was tested on the 
@@ -167,7 +164,27 @@ that the most valuable goals for replay were ones that were going to be achieved
 in the near future. HER was also tested on a physical fetch robot without fine-tuning
 and performed well on the pick-and-place task.
 
-\section{Environments}
+\section{Proposed System}
+The environment to conduct the experiment in is 2D SuperMarioBros environment which 
+has a continuous, non-repetitve state space in the form of pixel data with an 
+extremely sparse reward system. The objective in this environment is to navigate to the 
+end of the level while avoiding all obstacles. The complexity of this environment is attributed
+to the fact that in a single level, a state will never occur more than once due to the
+uni-directional nature of the level. This environment will be used as a baseline for comparison
+with a much more complex 3D environment called MineRL with hierarchial tasks where the 
+goal is to craft specific resources by gathering raw materials from the environment.
+
+The proposed system is a Curiosity-Driven Off-Policy agent which includes a modified version
+of the ICM \textit{(Intrinsic Curiosity Module)} called the Simplified-ICM \cite{cdl2} coupled with an 
+off policy learner like DDDQN \textit{(Dueling Double Deep Q-Network)} or DQfD
+\textit{(Deep Q-Learning from Demonstrations)} depending on the environment.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.65]{review-0-architecture.png}
+  \caption{Proposed System Architecture}
+  \label{fig:proposed-system}
+\end{figure}
 
 
 \begin{thebibliography}{99}
@@ -201,8 +218,9 @@ and performed well on the pick-and-place task.
   {\em Hindsight Experience Replay.}
   Advances in Neural Information Processing Systems 30 (NIPS) (2017).
 
+  \bibitem[8]{cdl2}B. Li, T. Lu, J. Li, N. Lu, Y. Cai and S. Wang, 
+  {\em Curiosity-Driven Exploration for Off-Policy Reinforcement Learning Methods.}
+  IEEE International Conference on Robotics and Biomimetics (ROBIO) (2019)
 \end{thebibliography}
-
-
 	
 \end{document}
