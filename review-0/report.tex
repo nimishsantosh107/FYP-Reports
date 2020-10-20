@@ -199,6 +199,54 @@ Based on this newly constructed reward signal, the TD update is performed. With 
 estimates, the agent will start to explore previously unseen states and find better 
 solutions to the environment.
 
+\section{Module Split-Up}
+
+\subsection{Off-Policy Agent}
+An Off-Policy agent was chosen for the project for two reasons. The relatively sample-efficient
+nature of such algorithms due to the use of a Replay Buffer and due to the availability of 
+human-demonstrations for the second environment which requires the aforementioned Replay Buffer.
+The algorithm to be used will be a slight modification of the DQN called the DDDQN which has a 
+better performance overall. The second environment will use a DQfD which doesn't have to interact with environment
+as much as the batches of data are already present. The Q-Network in the agents will take in input in the 
+form of stacked grayscale pixel-data (e.g. frames from 4 consecutive time steps stacked to form a 4 channel image) 
+to preserve the characteristics of the change in the environment over time. The network produces two outputs. A single
+value depicting the overall value of the state $V(s)$ and a tensor of action advantage values for every
+action possible in the state $A^\pi(s,a) \forall a \in A$. The loss function used will be Huber Loss 
+(SmoothL1Loss) as it is less sensitive to outliers in data than the squared error loss. This output 
+is indirectly used by an $\epsilon$-greedy policy
+to explore or exploit its current knowledge of the environment where the $\epsilon$ value
+is reduced from 1.00 (completely random action) to 0.01 (99\% deterministic action) over 1,000,000
+interactions with the environment.
+
+\subsection{Simplified Intrinsic Curiosity Module}
+This module is to be used in the pipeline in between the Replay Buffer and the agent to generate
+a modified intrinsic reward signal as oppopsed to directly sending the batch of data from the Replay Buffer
+to the agent for the TD update. The rewards stored in the Replay Buffer are from the environment and are sparse
+and so the S-ICM generates a modified reward using which the TD update is performed by the agent.
+This module is also used to make up for the drawback of DQN based agents which is their inability to generalize
+to unseen states as evidence suggests that this module improves the ability of an agent to generalize.
+The S-ICM consists of a neural network that takes in a state $s_t$ and an action $a_t$ and predicts the next state $s'_{t+1})$
+which is compared with the actual next state $s_{t+1}$. The loss function used for this network is a 
+mean squared error loss. The maginitude of the loss here shows its level
+of knowledge about the dynamics of the environment. The higher the loss, the higher the intrinsic reward
+which incentivizes a sense of "curiosity" in the agent to revisit the visited state and explore further.
+
+\subsection{Replay Buffer}
+The Replay Buffer is a collection of states $s$, actions $a$, extrinsic rewards $r^e$ and 
+next states $s'$ which constitutes an experience tuple. The Buffer is uniformly sampled to 
+create a batch of uncorellated experience tuples in a random order. There are multiple advantages
+to doing this. First, each step of experience is potentially used in many weight 
+updates, which allows for greater data efficiency. Second, learning directly from
+consecutive samples is inefficient, owing to the strong correlations between the 
+samples; randomizing the samples breaks these correlations and therefore reduces 
+the variance of the updates. Third, when learning on-policy the current parameters 
+determine the next data sample that the parameters are trained on. For example, if the
+maximizing action is to move left then the training samples will be dominated by
+samples from the left-hand side; if the maximizing action then switches to the 
+right then the training distribution will also switch. 
+It is easy to see how unwanted feedback loops may arise and the parameters could
+get stuck in a poor local minimum, or even diverge catastrophically. The use of a Replay
+Buffer avoids such scenarios.
 
 \begin{thebibliography}{99}
 \bibliographystyle{plain}
